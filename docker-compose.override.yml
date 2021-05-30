@@ -31,6 +31,9 @@ services:
   pgadmin:
     ports:
       - "5050:5050"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=hunter12
 
   flower:
     ports:
@@ -77,11 +80,6 @@ services:
       context: ./frontend
       args:
         FRONTEND_ENV: dev
-    labels:
-      - traefik.enable=true
-      - traefik.constraint-label-stack=${TRAEFIK_TAG?Variable not set}
-      - traefik.http.routers.${STACK_NAME?Variable not set}-frontend-http.rule=PathPrefix(`/`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=80
 
 networks:
   traefik-public:
