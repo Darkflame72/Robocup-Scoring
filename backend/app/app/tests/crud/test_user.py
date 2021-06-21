@@ -93,6 +93,7 @@ def test_update_user(db: Session) -> None:
     assert user.email == user_2.email
     assert verify_password(new_password, user_2.hashed_password)
 
+
 def test_update_user_not_password(db: Session) -> None:
     password = random_lower_string()
     email = random_email()
