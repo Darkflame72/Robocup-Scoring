@@ -3,6 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
+from pydantic.types import UUID4
 from sqlalchemy.orm import Session
 
 from app import crud, models, schemas
@@ -111,14 +112,14 @@ def create_user_open(
 
 @router.get("/{user_id}", response_model=schemas.User)
 def read_user_by_id(
-    user_id: int,
+    user_uuid: UUID4,
     current_user: models.User = Depends(deps.get_current_active_user),
     db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     Get a specific user by id.
     """
-    user = crud.user.get(db, id=user_id)
+    user = crud.user.get(db, uuid=user_uuid)
     if user == current_user:
         return user
     if not crud.user.is_superuser(current_user):
@@ -132,14 +133,14 @@ def read_user_by_id(
 def update_user(
     *,
     db: Session = Depends(deps.get_db),
-    user_id: int,
+    user_uuid: UUID4,
     user_in: schemas.UserUpdate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Update a user.
     """
-    user = crud.user.get(db, id=user_id)
+    user = crud.user.get(db, uuid=user_uuid)
     if not user:
         raise HTTPException(
             status_code=404,

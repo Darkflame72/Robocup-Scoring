@@ -2,7 +2,8 @@ from typing import List, Optional
 from app.schemas.user import User
 
 from pydantic import BaseModel
-from uuid import UUID
+
+from pydantic.types import UUID4
 
 # Shared properties
 class TeamBase(BaseModel):
@@ -11,7 +12,7 @@ class TeamBase(BaseModel):
     num_member: int
     hardware_type: str
     software_type: str
-    uuid_mentor: UUID
+    uuid_mentor: UUID4
 
 
 # Properties to receive via API on creation
@@ -25,7 +26,7 @@ class TeamUpdate(TeamBase):
 
 
 class TeamInDBBase(TeamBase):
-    uuid: Optional[UUID] = None
+    uuid: Optional[UUID4] = None
 
     class Config:
         orm_mode = True
@@ -33,7 +34,6 @@ class TeamInDBBase(TeamBase):
 
 # Additional properties to return via API
 class Team(TeamInDBBase):
-    uuid: UUID
     team_present: int = 0
     interview_comments: Optional[str] = None
 
