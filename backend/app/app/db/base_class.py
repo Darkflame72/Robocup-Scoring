@@ -10,4 +10,9 @@ class Base:
     # Generate __tablename__ automatically
     @declared_attr
     def __tablename__(cls) -> str:
-        return cls.__name__.lower()
+        out = cls.__name__[0]
+        for i in range(1, len(cls.__name__)):
+            if cls.__name__[i].isupper():
+                out += "_"
+            out += cls.__name__[i]
+        return out.lower()

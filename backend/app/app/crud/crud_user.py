@@ -1,4 +1,5 @@
 from typing import Any, Dict, Optional, Union
+from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
@@ -14,10 +15,12 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
+            uuid=uuid4(),
             email=obj_in.email,
             hashed_password=get_password_hash(obj_in.password),
             full_name=obj_in.full_name,
             is_superuser=obj_in.is_superuser,
+            phone_number=obj_in.phone_number,
         )
         db.add(db_obj)
         db.commit()
@@ -44,9 +47,6 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         if not verify_password(password, user.hashed_password):
             return None
         return user
-
-    def is_active(self, user: User) -> bool:
-        return user.is_active
 
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
