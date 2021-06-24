@@ -1,7 +1,7 @@
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr
-
+from pydantic import BaseModel
+from pydantic import EmailStr
 from pydantic.types import UUID4
 
 # Shared properties

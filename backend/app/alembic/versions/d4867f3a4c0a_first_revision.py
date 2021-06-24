@@ -5,14 +5,15 @@ Revises:
 Create Date: 2019-04-17 13:53:32.978401
 
 """
-from sqlalchemy.dialects.postgresql import UUID
-from alembic import op
+import uuid
+
 import sqlalchemy as sa
+from alembic import op
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.functions import func
 from sqlalchemy.sql.operators import as_
 from sqlalchemy.sql.sqltypes import DateTime
-import uuid
 
 
 # revision identifiers, used by Alembic.
@@ -69,37 +70,25 @@ def upgrade():
         #     server_default=text("Not Complete"),
         #     nullable=False,
         # ),
-        sa.Column(
-            "uuid_mentor", UUID(as_uuid=True), nullable=True
-        ),
+        sa.Column("uuid_mentor", UUID(as_uuid=True), nullable=True),
         sa.Column("uuid_competition", UUID(as_uuid=True), nullable=True),
         sa.Column("hardware_type", sa.String(64), nullable=False),
         sa.Column("software_type", sa.String(100), nullable=False),
         sa.PrimaryKeyConstraint("uuid"),
         sa.ForeignKeyConstraint(["uuid_mentor"], ["user.uuid"]),
         sa.ForeignKeyConstraint(["uuid_competition"], ["competition.uuid"]),
-
     )
 
     op.create_table(
         "team_member",
-        sa.Column(
-            "uuid",
-            UUID(as_uuid=True),
-            nullable=False,
-        ),
-        sa.Column(
-            "uuid_team", UUID(as_uuid=True), nullable=False
-        ),
+        sa.Column("uuid", UUID(as_uuid=True), nullable=False,),
+        sa.Column("uuid_team", UUID(as_uuid=True), nullable=False),
         sa.Column("role", sa.String(length=10), nullable=True),
         # sa.Column("competition", UUID(as_uuid=True), nullable=False),
         sa.PrimaryKeyConstraint("uuid"),
         sa.ForeignKeyConstraint(["uuid"], ["user.uuid"]),
         sa.ForeignKeyConstraint(["uuid_team"], ["team.uuid"]),
-
     )
-
-
 
     ############
     ## Awards ##
@@ -146,15 +135,15 @@ def upgrade():
         sa.Column("uuid_onstage_round_type", UUID(as_uuid=True), nullable=False),
         sa.Column("uuid_challenge_division", UUID(as_uuid=True), nullable=False),
         sa.PrimaryKeyConstraint("uuid"),
-        sa.ForeignKeyConstraint(["uuid_onstage_round_type"], ["onstage_round_type.uuid"]),
+        sa.ForeignKeyConstraint(
+            ["uuid_onstage_round_type"], ["onstage_round_type.uuid"]
+        ),
     )
 
     op.create_table(
         "onstage_interview",
-        sa.Column(
-            "uuid", UUID(as_uuid=True), nullable=False
-        ),
-        sa.Column("uuid_team",  UUID(as_uuid=True), nullable=False),
+        sa.Column("uuid", UUID(as_uuid=True), nullable=False),
+        sa.Column("uuid_team", UUID(as_uuid=True), nullable=False),
         sa.Column("competition", sa.Integer, nullable=False),
         sa.Column("score", sa.Integer, nullable=False),
         sa.Column("data", sa.JSON, nullable=False),

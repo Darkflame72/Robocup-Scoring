@@ -1,8 +1,8 @@
-from sqlalchemy.orm import Session
-
-from app import crud, schemas
+from app import crud
+from app import schemas
 from app.core.config import settings
 from app.db import base
+from sqlalchemy.orm import Session
 
 # make sure all SQL Alchemy models are imported (app.db.base) before initializing DB
 # otherwise, SQL Alchemy might fail to initialize relationships properly

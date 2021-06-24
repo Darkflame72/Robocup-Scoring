@@ -1,12 +1,15 @@
-from typing import Any, Dict, Optional, Union
-from uuid import uuid4
 import datetime
-
-from sqlalchemy.orm import Session
+from typing import Any
+from typing import Dict
+from typing import Optional
+from typing import Union
+from uuid import uuid4
 
 from app.crud.base import CRUDBase
 from app.models.competition import Competition
-from app.schemas.competition import CompetitionCreate, CompetitionUpdate
+from app.schemas.competition import CompetitionCreate
+from app.schemas.competition import CompetitionUpdate
+from sqlalchemy.orm import Session
 
 
 class CRUDCompetition(CRUDBase[Competition, CompetitionCreate, CompetitionUpdate]):
@@ -15,10 +18,7 @@ class CRUDCompetition(CRUDBase[Competition, CompetitionCreate, CompetitionUpdate
 
     def create(self, db: Session, *, obj_in: CompetitionCreate) -> Competition:
         db_obj = Competition(
-            uuid=uuid4(),
-            name=obj_in.name,
-            region=obj_in.region,
-            date=obj_in.date,
+            uuid=uuid4(), name=obj_in.name, region=obj_in.region, date=obj_in.date,
         )
         db.add(db_obj)
         db.commit()

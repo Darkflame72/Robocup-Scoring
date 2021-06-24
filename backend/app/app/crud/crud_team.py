@@ -1,12 +1,17 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
 from uuid import uuid4
-from pydantic.types import UUID4
-
-from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.models.team import Team, TeamMember
-from app.schemas.team import TeamCreate, TeamUpdate
+from app.models.team import Team
+from app.models.team import TeamMember
+from app.schemas.team import TeamCreate
+from app.schemas.team import TeamUpdate
+from pydantic.types import UUID4
+from sqlalchemy.orm import Session
 
 
 class CRUDTeam(CRUDBase[Team, TeamCreate, TeamUpdate]):
@@ -27,7 +32,6 @@ class CRUDTeam(CRUDBase[Team, TeamCreate, TeamUpdate]):
 
     def get_team_members(self, db: Session, uuid: UUID4) -> List[TeamMember]:
         return db.query(TeamMember).filter(TeamMember.uuid == uuid).all()
-
 
     # def update(
     #     self, db: Session, *, db_obj: Team, obj_in: Union[TeamUpdate, Dict[str, Any]]

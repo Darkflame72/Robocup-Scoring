@@ -1,8 +1,11 @@
 import logging
 
-from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
-
 from app.db.session import SessionLocal
+from tenacity import after_log
+from tenacity import before_log
+from tenacity import retry
+from tenacity import stop_after_attempt
+from tenacity import wait_fixed
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -1,11 +1,15 @@
-from typing import Any, List
+from typing import Any
+from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from app import crud
+from app import models
+from app import schemas
+from app.api import deps
+from fastapi import APIRouter
+from fastapi import Depends
+from fastapi import HTTPException
 from pydantic.types import UUID4
 from sqlalchemy.orm import Session
-
-from app import crud, models, schemas
-from app.api import deps
 
 router = APIRouter()
 

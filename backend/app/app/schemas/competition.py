@@ -1,7 +1,7 @@
+import datetime
 from typing import Optional
 
 from pydantic import BaseModel
-import datetime
 from pydantic.types import UUID4
 
 # Shared properties

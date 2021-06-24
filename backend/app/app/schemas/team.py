@@ -1,8 +1,8 @@
-from typing import List, Optional
+from typing import List
+from typing import Optional
+
 from app.schemas.user import User
-
 from pydantic import BaseModel
-
 from pydantic.types import UUID4
 
 # Shared properties

@@ -1,15 +1,20 @@
-from typing import Any, List
+from typing import Any
+from typing import List
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from app import crud
+from app import models
+from app import schemas
+from app.api import deps
+from app.core.config import settings
+from app.utils import send_new_account_email
+from fastapi import APIRouter
+from fastapi import Body
+from fastapi import Depends
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
 from pydantic.types import UUID4
 from sqlalchemy.orm import Session
-
-from app import crud, models, schemas
-from app.api import deps
-from app.core.config import settings
-from app.utils import send_new_account_email
 
 router = APIRouter()
 

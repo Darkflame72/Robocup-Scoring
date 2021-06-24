@@ -1,8 +1,10 @@
-from sqlalchemy import Column, String, Date
-from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
 from app.db.base_class import Base
+from sqlalchemy import Column
+from sqlalchemy import Date
+from sqlalchemy import String
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class Competition(Base):
