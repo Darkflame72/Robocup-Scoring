@@ -111,7 +111,7 @@ def create_user_open(
 
 
 @router.get("/{user_uuid}", response_model=schemas.User)
-def read_user_by_id(
+def read_user_by_uuid(
     user_uuid: UUID4,
     current_user: models.User = Depends(deps.get_current_active_user),
     db: Session = Depends(deps.get_db),
