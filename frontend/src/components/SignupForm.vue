@@ -1,12 +1,18 @@
 <template>
     <div id="signup">
-        <div id="loader" :class="{fadeIn: !showFormContents}">
+        <div id="loader" class="fade" :class="{fadeIn: !showFormContents, fadeOut: hideLoader}">
             <div></div>
             <div></div>
             <div></div>
             <div></div>
         </div>
-        <div :class="{fade: !showFormContents}">
+        <div id="successful"  class="fade" :class="{fadeIn: successfulPost}">
+            <!-- <h1>congrats, its working, you just chucked something in the db</h1> -->
+        </div>
+        <div id="successful-message" v-if="successfulPost" class="fade" :class="{fadeIn: successfulPost}">
+            <h2>Sign up successful</h2>
+        </div>
+        <div class="fade" :class="{fade: !showFormContents, fadeIn: showFormContents}">
             <h2>Sign up to Robocup Junior</h2>
 
             <form @submit.prevent="handleSubmit">
@@ -14,7 +20,7 @@
                     <label>Full Name</label>
                     <input v-model="name" type="text" required>
 
-                    <label>Email</label>
+                    <label>Email <span class="error" v-if="emailError">{{emailError}}</span></label>
                     <input v-model="email" type="email" required>
 
                     <label>Phone Number</label>
@@ -23,7 +29,7 @@
                     <label>Password <span class="error" v-if="passwordError">{{passwordError}}</span></label>
                     <input v-model="password" type="password" required>
 
-                    <button @click="handleSubmit">Sign up</button>
+                    <button @click="handleSubmit">{{signUpMessage}}</button>
                 
                 
             </form>
@@ -37,12 +43,16 @@ import axios from "axios"
 export default {
     data() {
         return {
+            successfulPost: false,
             showFormContents: true,
+            hideLoader: false,
             name: '',
             email: '',
             ph_number: 0,
             password: '',
-            passwordError: ''
+            passwordError: '',
+            emailError: '',
+            signUpMessage: "Sign up"
         }
     },
 
@@ -64,11 +74,11 @@ export default {
             this.passwordError = this.password.length > 5 ? 
             '' : " - Must be at least 6 chars long";
             
-
-            // breakpts
+            // validate email
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (this.passwordError) {return;}
-            if (!re.test(String(this.email).toLowerCase())) {return;}
+            this.emailError = re.test(String(this.email).toLowerCase()) ? "" : "Must be a valid email"
+            
+            if (this.passwordError || this.emailError) {return;}
 
             // submit post req
             let object = {
@@ -79,21 +89,34 @@ export default {
                 "password": this.password
             }
 
-            // axios.post('/api/v1/users', object)
-            // .then(function (response) {
-            //     console.log(response);
-            // })
-            // .catch(function (error) {
-            //     console.log(error);
-            // });
+            let successfulPost;
+            axios.post('/api/v1/users', object)
+            .then(function (response) {
+                console.log(response);
+                successfulPost = true;
+            })
+            .catch(function (error) {
+                console.log(error);
+                successfulPost = false;
+            });
 
-            // transition
+            
+            // do the transition thing
             this.showFormContents = false;
-
             setTimeout(() => {
-                console.log("in here");
-            }, 500)
+                this.hideLoader = true;
 
+                // go to signed in page
+                if (successfulPost) {
+                    this.successfulPost = true;
+                } 
+                
+                // don't go, but go back to form, and display error
+                else {
+                    this.showFormContents = true;
+                    this.signUpMessage = "Error submitting - Click to try again"
+                }
+            }, 1500)
             
         }
     }
@@ -113,7 +136,6 @@ export default {
         top: 0;
         bottom: 0;
         margin: auto;
-
         display: flex;
         justify-content: space-around;
         align-items: flex-end;
@@ -207,6 +229,7 @@ export default {
         color: white;
         border-radius: 20px;
         width: 100%;
+        cursor: pointer;
     }
 
     .error {
@@ -224,4 +247,51 @@ export default {
         opacity: 100% !important;
     }
 
+    .fadeOut {
+        opacity: 0% !important;
+    }
+
+    #successful {
+        z-index: 1;
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background: #7cc76d;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        border-radius: 50%;    
+    }
+
+    #successful:after {
+        content: " ";
+        display: block;
+        width: 0.3em; 
+        height: 0.6em;
+        border: solid white;
+        border-width: 0 0.2em 0.2em 0; 
+        position: absolute;
+        left: 95px;
+        top: 45%;
+        margin-top: -0.2em;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg) scale(5);
+    }
+
+    #successful-message {
+        z-index: 1;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 70%;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9em;
+        color: rgba(0,0,0, 0.8);
+    }
 </style>
