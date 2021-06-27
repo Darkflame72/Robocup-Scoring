@@ -1,18 +1,18 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <!-- comment this out below if you don't want to see the sign up
+  and if you wanna work on another component - temporary -->
+  <SignupForm/> 
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
 
-export default defineComponent({
+import SignupForm from "./components/SignupForm.vue"
+
+export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-})
+  components: { SignupForm }
+}
+
 </script>
 
 <style>
