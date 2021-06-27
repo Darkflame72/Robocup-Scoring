@@ -1,13 +1,16 @@
 <template>
-  <SignupForm/>
+  <!-- comment this out below if you don't want to see the sign up
+  and if you wanna work on another component - temporary -->
+  <SignupForm/> 
 </template>
 
 <script lang="ts">
+
 import SignupForm from "./components/SignupForm.vue"
 
 export default {
   name: 'App',
-  components: {SignupForm}
+  components: { SignupForm }
 }
 
 </script>
