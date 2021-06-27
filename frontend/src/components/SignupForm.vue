@@ -29,7 +29,7 @@
                     <input v-model="name" type="text" required>
 
                     <label>Email <span class="error" v-if="emailError">{{emailError}}</span></label>
-                    <input ref="email" v-model="email" type="email" required>
+                    <input ref="email" v-model="email" type="text" required>
 
                     <label>Phone Number</label>
                     <input v-model="ph_number" type="tel" @keypress="onlyNumberKey">
@@ -49,7 +49,7 @@ import axios from "axios"
 export default {
     data() {
         return {
-            failedPost: false,          // simply for shake detection
+            failedPost: false,          // simply for shake detection - when error or cant POST
             successfulPost: null,       // whether the green checkmark screen is shown
             showFormContents: true,     // whether the main inputs to the form are shown
             hideLoader: false,          // whether the CSS loader is shown
@@ -81,6 +81,8 @@ export default {
          * Handles the submit request from the form button press, sanitising, POST to server, transition to next page
          */
         handleSubmit() {
+            // Reset shake attribute
+            this.failedPost = false;
 
             // Raise error if password is not at least 6 chars
             let minPasswordLength = 6
@@ -91,15 +93,12 @@ export default {
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             this.emailError = re.test(String(this.email).toLowerCase()) ? "" : "Must be a valid email"
             
-
             // Do not continue with POST request if either errors detected
             if (this.emailError) {
                 this.$refs.email.focus();
-                this.failedPost = true;
                 return;
             } else if (this.passwordError) {
                 this.$refs.password.focus();
-                this.failedPost = true;
                 return;
             }
 
@@ -264,6 +263,10 @@ export default {
             border-radius: 20px;
             width: 100%;
             cursor: pointer;
+        }
+
+        #signup button:hover {
+            background: #4b993b;
         }
 
     /* what to style error messages as, above the inputs, next to labels */
