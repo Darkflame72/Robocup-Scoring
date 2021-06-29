@@ -1,5 +1,17 @@
 # Robocup Scoring
 
+
+## Repo Split
+--------------------------------
+Due to this project having the frontend and backend seperate it has been split into two different repo's for easier development.
+This repo has been archived to store the issues and to provide a reference to the main repos.
+
+Frontend: https://github.com/Darkflame72/robocup-frontend
+Backend: https://github.com/Darkflame72/robocup-backend
+
+
+
+
 ## Backend Requirements
 
 - [Docker](https://www.docker.com/).
